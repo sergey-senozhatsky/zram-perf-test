@@ -110,6 +110,13 @@ function main
 		FIO_LOOPS=1
 	fi
 
+	FIO_TEMPLATE=./conf/fio-template-static-buffer
+	if [ "z$FIO_TEST" == "zcompbuf" ]; then
+		FIO_TEMPLATE=./conf/fio-template-compressed-buffer
+	fi
+
+	echo "Using $FIO_TEMPLATE fio template"
+
 	for i in `seq $MAX_ITER`; do
 		reset_zram
 		create_zram
@@ -122,12 +129,6 @@ function main
 
 		echo "#jobs$i fio"
 
-		FIO_TEMPLATE=./conf/fio-template-static-buffer
-		if [ "z$FIO_TEST" == "zcompbuf" ]; then
-			FIO_TEMPLATE=./conf/fio-template-compressed-buffer
-		fi
-
-		echo "Using $FIO_TEMPLATE fio template"
 		
 		echo "#jobs$i fio" >> $LOG
 		BLOCK_SIZE=$(($i*4)) SIZE=100% NUMJOBS=$i NRFILES=$i FIO_LOOPS=$FIO_LOOPS $PERF stat -o $LOG-perf-stat fio ./$FIO_TEMPLATE >> $LOG
