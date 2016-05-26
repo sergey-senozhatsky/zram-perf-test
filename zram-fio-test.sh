@@ -21,7 +21,7 @@
 
 LOG=/tmp/test-fio-zram
 MEM_HOGGER_PID=0
-EXTENDED_LOG=0
+EXT_LOG=0
 PERF="perf"
 
 function reset_zram
@@ -91,15 +91,15 @@ function main
 	LOG=$LOG-$LOG_SUFFIX
 
 	if [ "z$USE_MEM_HOGGER" != "z" ]; then
-		EXTENDED_LOG=1
+		EXT_LOG=1
 	fi
 
 	if [ "z$EXTENDED_LOG" != "z" ]; then
-		EXTENDED_LOG=1
+		EXT_LOG=1
 	fi
 
 	if [ "z$ZRAM_SIZE" != "z" ]; then
-		ZRAM_SIZE=3G	
+		ZRAM_SIZE=3G
 	fi
 
 	if [ "z$MAX_ITER" == "z" ]; then
@@ -139,7 +139,7 @@ function main
 
 		cat /sys/block/zram0/debug_stat
 
-		if [ "z$EXTENDED_LOG" != "z0" ]; then
+		if [ $EXT_LOG -eq 1 ]; then
 			echo -n "mm_stat (jobs$i): " >> $LOG
 			cat /sys/block/zram0/mm_stat >> $LOG
 
