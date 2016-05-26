@@ -20,9 +20,32 @@
 #undef APP_NAME
 #define APP_NAME "bin-mem-hogger"
 
-static long max_mem = MB(200);
+static unsigned long long max_mem = 0;
 static char *lock_file = NULL;
 static char *mem;
+
+static unsigned long long memparse(const char *mem)
+{
+	char *end;
+
+	unsigned long long ret = strtoull(mem, &end, 10);
+
+	switch (*end) {
+		case 'G':
+		case 'g':
+			ret <<= 10;
+		case 'M':
+		case 'm':
+			ret <<= 10;
+		case 'K':
+		case 'k':
+			ret <<= 10;
+		default:
+			break;
+	}
+
+	return ret;
+}
 
 static void print_usage(void)
 {
@@ -132,8 +155,7 @@ int main(int argc, char **argv)
 				lock_file = optarg;
 				break;
 			case 'm':
-				max_mem = strtol(optarg, NULL, 10);
-				max_mem = MB(max_mem);
+				max_mem = memparse(optarg);
 				break;
 			default:
 				abort();

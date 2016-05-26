@@ -16,7 +16,7 @@
 #
 # Example:
 #
-# ZRAM_SIZE=2G LOG_SUFFIX=NEW FIO_LOOPS=1 FIO_TEST=compbuf ./zram-fio-test.sh
+# ZRAM_SIZE=2G LOG_SUFFIX=NEW MEM_HOGGER_SIZE=1G FIO_LOOPS=1 FIO_TEST=compbuf ./zram-fio-test.sh
 #
 
 LOG=/tmp/test-fio-zram
@@ -48,7 +48,7 @@ function create_zram
 function start_single_alloc
 {
 	touch ./.single_alloc_init
-	./bin/bin-mem-hogger -m $((4 * 1024)) -l ./.single_alloc_init&
+	./bin/bin-mem-hogger -m $MEM_HOGGER_SIZE -l ./.single_alloc_init&
 	MEM_HOGGER_PID=$!
 
 	while [ -e ./.single_alloc_init ]; do
@@ -59,14 +59,14 @@ function start_single_alloc
 
 function exec_mem_hogger
 {
-	if [ "z$USE_MEM_HOGGER" != "z" ]; then
+	if [ "z$MEM_HOGGER_SIZE" != "z" ]; then
 		start_single_alloc
 	fi
 }
 
 function signal_mem_hogger
 {
-	if [ "z$USE_MEM_HOGGER" != "z" ]; then
+	if [ "z$MEM_HOGGER_SIZE" != "z" ]; then
 		kill -USR1 $MEM_HOGGER_PID
 		sleep 2s
 	fi
@@ -74,7 +74,7 @@ function signal_mem_hogger
 
 function kill_mem_hogger
 {
-	if [ "z$USE_MEM_HOGGER" != "z" ]; then
+	if [ "z$MEM_HOGGER_SIZE" != "z" ]; then
 		kill -TERM $MEM_HOGGER_PID
 	fi
 }
@@ -90,7 +90,7 @@ function main
 
 	LOG=$LOG-$LOG_SUFFIX
 
-	if [ "z$USE_MEM_HOGGER" != "z" ]; then
+	if [ "z$MEM_HOGGER_SIZE" != "z" ]; then
 		EXT_LOG=1
 	fi
 

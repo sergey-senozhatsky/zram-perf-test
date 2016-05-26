@@ -9,8 +9,8 @@ LOG_SUFFIX=
 	The suffix the test result file must contain:
 	/tmp/test-fio-zram-$LOG_SUFFIX
 
-USE_MEM_HOGGER=
-	Start a memory hogger app in the backgroud
+MEM_HOGGER_SIZE=
+	Start a memory hogger app in the backgroud (e.g. 3G, 512M)
 
 EXTENDED_LOG=
 	Record an extended stats (mm_stat, buddyinfo, etc.)
