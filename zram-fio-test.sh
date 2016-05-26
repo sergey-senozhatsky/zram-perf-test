@@ -129,9 +129,10 @@ function main
 
 		echo "#jobs$i fio"
 
-		
 		echo "#jobs$i fio" >> $LOG
-		BLOCK_SIZE=4 SIZE=100% NUMJOBS=$i NRFILES=$i FIO_LOOPS=$FIO_LOOPS $PERF stat -o $LOG-perf-stat fio ./$FIO_TEMPLATE >> $LOG
+
+		BLOCK_SIZE=4 SIZE=100% NUMJOBS=$i NRFILES=$i FIO_LOOPS=$FIO_LOOPS \
+			$PERF stat -o $LOG-perf-stat fio ./$FIO_TEMPLATE >> $LOG
 
 		echo -n "perfstat jobs$i" >> $LOG
 		cat $LOG-perf-stat >> $LOG
@@ -145,7 +146,7 @@ function main
 			echo "buddyinfo (jobs$i): " >> $LOG
 			cat /proc/buddyinfo >> $LOG
 		fi
-		
+
 		kill_mem_hogger
 	done
 
