@@ -16,7 +16,7 @@
 #
 # Example:
 #
-# ZRAM_SIZE=2G LOG_SUFFIX=NEW MEM_HOGGER_SIZE=1G FIO_LOOPS=1 FIO_TEST=compbuf ./zram-fio-test.sh
+# ZRAM_SIZE=2G ZRAM_COMP_ALG=lz4 LOG_SUFFIX=NEW MEM_HOGGER_SIZE=1G FIO_LOOPS=1 FIO_TEST=compbuf ./zram-fio-test.sh
 #
 
 LOG=/tmp/test-fio-zram
@@ -33,7 +33,7 @@ function reset_zram
 function create_zram
 {
 	modprobe zram
-	echo lzo > /sys/block/zram0/comp_algorithm
+	echo $ZRAM_COMP_ALG > /sys/block/zram0/comp_algorithm
 	cat /sys/block/zram0/comp_algorithm
 
 	echo $ZRAM_SIZE > /sys/block/zram0/disksize
@@ -108,6 +108,10 @@ function main
 
 	if [ "z$FIO_LOOPS" == "z" ]; then
 		FIO_LOOPS=1
+	fi
+
+	if [ "z$ZRAM_COMP_ALG" == "z" ]; then
+		ZRAM_COMP_ALG=lzo
 	fi
 
 	FIO_TEMPLATE=./conf/fio-template-static-buffer

@@ -18,6 +18,9 @@ EXTENDED_LOG=
 ZRAM_SIZE=
 	The size of the zram device (e.g. 3G, 512M)
 
+ZRAM_COMP_ALG=
+	Use the specified compression algorithm (lzo, lz4).
+
 MAX_ITER=
 	The number of fio iterations. On each iteration the
 	test increases the number of fio jobs, files to create,
