@@ -23,6 +23,7 @@ LOG=/tmp/test-fio-zram
 MEM_HOGGER_PID=0
 EXT_LOG=0
 PERF="perf"
+FIO="fio"
 
 function reset_zram
 {
@@ -136,7 +137,7 @@ function main
 		echo "#jobs$i fio" >> $LOG
 
 		BLOCK_SIZE=4 SIZE=100% NUMJOBS=$i NRFILES=$i FIO_LOOPS=$FIO_LOOPS \
-			$PERF stat -o $LOG-perf-stat fio ./$FIO_TEMPLATE >> $LOG
+			$PERF stat -o $LOG-perf-stat $FIO ./$FIO_TEMPLATE >> $LOG
 
 		echo -n "perfstat jobs$i" >> $LOG
 		cat $LOG-perf-stat >> $LOG
