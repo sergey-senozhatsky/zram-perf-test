@@ -99,7 +99,7 @@ function main
 		EXT_LOG=1
 	fi
 
-	if [ "z$ZRAM_SIZE" != "z" ]; then
+	if [ "z$ZRAM_SIZE" == "z" ]; then
 		ZRAM_SIZE=3G
 	fi
 
