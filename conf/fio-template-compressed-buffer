@@ -14,20 +14,20 @@ new_group
 group_reporting
 threads=1
 
-[seq-read]
-rw=read
-
-[rand-read]
-rw=randread
-
 [seq-write]
 rw=write
 
 [rand-write]
 rw=randwrite
 
-[mixed-seq]
-rw=rw
+[seq-read]
+rw=read
+
+[rand-read]
+rw=randread
 
 [mixed-rand]
 rw=randrw
+
+[mixed-seq]
+rw=rw
