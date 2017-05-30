@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 # Sergey Senozhatsky. sergey.senozhatsky@gmail.com
@@ -27,6 +27,7 @@ FIO="fio"
 
 function reset_zram
 {
+	echo 1 > /sys/block/zram0/reset
 	rmmod zram
 	rmmod zsmalloc
 }
@@ -36,6 +37,8 @@ function create_zram
 	modprobe zram
 	echo $ZRAM_COMP_ALG > /sys/block/zram0/comp_algorithm
 	cat /sys/block/zram0/comp_algorithm
+
+	# echo 1 > /sys/block/zram0/use_dedup
 
 	echo $ZRAM_SIZE > /sys/block/zram0/disksize
 	if [ $? != 0 ]; then
@@ -123,6 +126,9 @@ function main
 	echo "Using $FIO_TEMPLATE fio template"
 
 	for i in `seq $MAX_ITER`; do
+
+		echo $i
+
 		reset_zram
 		create_zram
 		if [ $? != 0 ]; then
@@ -136,6 +142,12 @@ function main
 
 		echo "#jobs$i fio" >> $LOG
 
+		DISK_SIZE=`cat /sys/block/zram0/disksize`
+		_NRFILES=$(($DISK_SIZE/(512 * 1024)))
+
+		echo "#files $_NRFILES"
+##		BLOCK_SIZE=4 SIZE=100% NUMJOBS=$i NRFILES=$_NRFILES FIO_LOOPS=$FIO_LOOPS \
+
 		BLOCK_SIZE=4 SIZE=100% NUMJOBS=$i NRFILES=$i FIO_LOOPS=$FIO_LOOPS \
 			$PERF stat -o $LOG-perf-stat $FIO ./$FIO_TEMPLATE >> $LOG
 
@@ -145,11 +157,11 @@ function main
 		cat /sys/block/zram0/debug_stat
 
 		if [ $EXT_LOG -eq 1 ]; then
-			echo -n "mm_stat (jobs$i): " >> $LOG
-			cat /sys/block/zram0/mm_stat >> $LOG
+			echo -n "mm_stat (jobs$i): " >> $LOG-mm_stat
+			cat /sys/block/zram0/mm_stat >> $LOG-mm_stat
 
-			echo "buddyinfo (jobs$i): " >> $LOG
-			cat /proc/buddyinfo >> $LOG
+			echo "buddyinfo (jobs$i): " >> $LOG-buddyinfo
+			cat /proc/buddyinfo >> $LOG-buddyinfo
 		fi
 
 		kill_mem_hogger
@@ -157,6 +169,11 @@ function main
 
 	rm $LOG-perf-stat
 	echo "Log file created: $LOG"
+
+	if [ $EXT_LOG -eq 1 ]; then
+		echo "$LOG-mm_stat"
+		echo "$LOG-buddyinfo"
+	fi
 
 	reset_zram
 }
