@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Sergey Senozhatsky. sergey.senozhatsky@gmail.com
 #
@@ -40,8 +40,6 @@ function parse_old_log
 	cat $1 \
 		| grep "seconds" \
 		| awk '{printf "%-22s %9s\n", "seconds elapsed", $1}' >> $2
-#	cat $1 \
-#		| grep "mm_stat" >> $2
 }
 
 function parse_new_log
@@ -60,8 +58,6 @@ function parse_new_log
 	cat $1 \
 		| grep "seconds" \
 		| awk '{printf "%9s\n", $1}' >> $2
-#	cat $1 \
-#		| grep "mm_stat" >> $2
 }
 
 function paste_logs

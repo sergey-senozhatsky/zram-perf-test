@@ -168,13 +168,14 @@ function main
 	done
 
 	rm $LOG-perf-stat
-	echo "Log file created: $LOG"
+	echo -n "Log files created: $LOG "
 
 	if [ $EXT_LOG -eq 1 ]; then
-		echo "$LOG-mm_stat"
-		echo "$LOG-buddyinfo"
+		echo -n " $LOG-mm_stat"
+		echo -n " $LOG-buddyinfo"
 	fi
 
+	echo
 	reset_zram
 }
 
