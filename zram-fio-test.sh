@@ -83,7 +83,6 @@ function kill_mem_hogger
 
 function main
 {
-	local j
 	local i
 
 	if [ "z$LOG_SUFFIX" == "z" ]; then
