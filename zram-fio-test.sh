@@ -35,10 +35,10 @@ function reset_zram
 function create_zram
 {
 	modprobe zram
-	echo $ZRAM_COMP_ALG > /sys/block/zram0/comp_algorithm
+	echo "$ZRAM_COMP_ALG" > /sys/block/zram0/comp_algorithm
 	cat /sys/block/zram0/comp_algorithm
 
-	echo $ZRAM_SIZE > /sys/block/zram0/disksize
+	echo "$ZRAM_SIZE" > /sys/block/zram0/disksize
 	if [ $? != 0 ]; then
 		return -1
 	fi
