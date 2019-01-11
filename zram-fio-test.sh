@@ -50,7 +50,7 @@ function create_zram
 function start_single_alloc
 {
 	touch ./.single_alloc_init
-	./bin/bin-mem-hogger -m $MEM_HOGGER_SIZE -l ./.single_alloc_init&
+	./bin/bin-mem-hogger -m "$MEM_HOGGER_SIZE" -l ./.single_alloc_init&
 	MEM_HOGGER_PID=$!
 
 	while [ -e ./.single_alloc_init ]; do
