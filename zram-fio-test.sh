@@ -122,7 +122,7 @@ function main
 
 	echo "Using $FIO_TEMPLATE fio template"
 
-	for i in `seq $MAX_ITER`; do
+	for i in $(seq $MAX_ITER); do
 
 		echo $i
 
@@ -139,7 +139,7 @@ function main
 
 		echo "#jobs$i fio" >> $LOG
 
-		DISK_SIZE=`cat /sys/block/zram0/disksize`
+		DISK_SIZE=$(cat /sys/block/zram0/disksize)
 		_NRFILES=$(($DISK_SIZE/(512 * 1024)))
 
 		echo "#files $_NRFILES"
