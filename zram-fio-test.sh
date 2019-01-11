@@ -40,7 +40,7 @@ function create_zram
 
 	echo "$ZRAM_SIZE" > /sys/block/zram0/disksize
 	if [ $? != 0 ]; then
-		return -1
+		return 1
 	fi
 
 	# don't mkfs/mount the device
