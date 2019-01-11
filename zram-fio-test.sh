@@ -38,8 +38,6 @@ function create_zram
 	echo $ZRAM_COMP_ALG > /sys/block/zram0/comp_algorithm
 	cat /sys/block/zram0/comp_algorithm
 
-	# echo 1 > /sys/block/zram0/use_dedup
-
 	echo $ZRAM_SIZE > /sys/block/zram0/disksize
 	if [ $? != 0 ]; then
 		return -1
