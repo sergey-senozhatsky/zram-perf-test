@@ -123,8 +123,7 @@ function main
 	echo "Using $FIO_TEMPLATE fio template"
 
 	for i in $(seq $MAX_ITER); do
-
-		echo $i
+		echo "$i"
 
 		reset_zram
 		create_zram
